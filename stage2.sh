@@ -43,7 +43,7 @@ title Arch Linux
 linux /vmlinuz-linux
 initrd /intel-ucode.img
 initrd /initramfs-linux.img
-options root=PARTLABEL=root rw
+options root=PARTLABEL=root rw quiet loglevel=3 vga=current rd.systemd.show_status=auto rd.udev.log_priority=3
 EOF
 
   passwd
@@ -51,7 +51,7 @@ EOF
 
 function usersetup() {
   pacman -S --noconfirm sudo 
-  useradd -m -G wheel -s /bin/bash andrew
+  useradd -m -G wheel,lp -s /bin/bash andrew
   passwd andrew
   cat > /etc/sudoers.d/wheel <<EOF
 %wheel ALL=(ALL) ALL
