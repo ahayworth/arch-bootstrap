@@ -38,8 +38,7 @@ function graphics() {
 }
 
 function desetup() {
-  sudo pacman -S --noconfirm udisks2 networkmanager network-manager-applet xdg-user-dirs pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-equalizer pamixer bluez bluez-utils blueman pavucontrol gvfs xorg-xprop arc-gtk-theme arc-icon-theme gtk-engine-murrine plank
-  yay -S plank-theme-arc
+  sudo pacman -S --noconfirm udisks2 networkmanager network-manager-applet xdg-user-dirs pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-equalizer pamixer bluez bluez-utils blueman pavucontrol gvfs xorg-xprop arc-gtk-theme arc-icon-theme gtk-engine-murrine
   sudo systemctl enable NetworkManager.service
   modprobe btusb || /bin/true
   sudo systemctl enable bluetooth.service
@@ -47,8 +46,8 @@ function desetup() {
 }
 
 function appsetup() {
-  pacman -S --noconfirm firefox tlp tlp-rdw python-gobject smartmontools redshift python-xdg mlocate
-  yay -S tlpui-git
+  pacman -S --noconfirm tlp tlp-rdw python-gobject smartmontools redshift python-xdg mlocate
+  yay -S tlpui-git google-chrome
   sudo systemctl enable tlp.service
   sudo systemctl enable tlp-sleep.service
   sudo updatedb
@@ -67,4 +66,4 @@ function fonts() {
 
 #desetup
 #appsetup
-#fonts
+fonts
