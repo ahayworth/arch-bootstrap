@@ -2,7 +2,7 @@
 
 set -ex
 
-PACKAGES="base base-devel linux linux-firmware terminus-font dhcpcd diffutils inetutils logrotate man-db man-pages vim texinfo usbutils which crda dnsutils dosfstools ethtool exfat-utils iwd mtools ntp openssh sudo usb_modeswitch curl wget wireless-regdb wireless-tools wpa_supplicant e2fsprogs device-mapper less git python-pip tmux lsb-release efibootmgr iputils iw dracut intel-ucode"
+PACKAGES="base base-devel linux linux-firmware terminus-font dhcpcd diffutils inetutils logrotate man-db man-pages vim texinfo usbutils which crda dnsutils dosfstools ethtool exfat-utils iwd mtools ntp openssh sudo usb_modeswitch curl wget wireless-regdb wireless_tools wpa_supplicant e2fsprogs device-mapper less git python-pip tmux lsb-release efibootmgr iputils iw dracut intel-ucode"
 DISK='/dev/nvme0n1'
 
 if [[ "$1" == "" ]]; then
@@ -39,8 +39,8 @@ if [[ "$1" == "--stage-one" ]]; then
   parted -s $DISK \
     mklabel gpt \
     mkpart primary fat32 1MiB 551MiB name 1 efi set 1 esp on \
-    mkpart primary swap 551MiB 30518MiB name 2 swap set 2 swap on \
-    mkpart primary ext4 30518MiB 100% name 3 root set 3 root on
+    mkpart primary linux-swap 551MiB 30518MiB name 2 swap \
+    mkpart primary ext4 30518MiB 100% name 3 root
 
   mkfs.fat -F32 -n boot ${DISK}p1
   mkswap -L swap ${DISK}p2
@@ -51,14 +51,14 @@ if [[ "$1" == "--stage-one" ]]; then
   mkdir /mnt/boot
   mount ${DISK}p1 /mnt/boot
 
-  installbase
+  pacstrap /mnt $PACKAGES
   genfstab -L /mnt >> /mnt/etc/fstab
 
   cp "$0" /mnt/
-  arch-chroot /mnt /mnt/$(basename "$0") --stage-two
+  arch-chroot /mnt /$(basename "$0") --stage-two
 elif [[ "$1" == "--stage-two" ]]; then
   ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
-  setfont ter-v132n
+  setfont ter-v22n
   hwclock --systohc
   echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
   echo 'LANG=en_US.UTF-8' > /etc/locale.conf
@@ -73,13 +73,12 @@ EOF
 
   echo > /etc/vconsole.conf <<EOF
 KEYMAP=us
-FONT=ter-v132n
+FONT=ter-v22n
 EOF
 
   echo 'blacklist nouveau' >> /etc/modprobe.d/blacklist-nouveau.conf
-  dracut --hostonly --force /boot/initramfs-linux.img
+  dracut --hostonly --kver $(ls /lib/modules) --force /boot/initramfs-linux.img
 
-  pacman -Rnu --noconfirm vi
   ln -sf /usr/bin/vim /usr/bin/vi
   efibootmgr --disk ${DISK} --part 1 --create --label 'Arch Linux' --loader /vmlinuz-linux --verbose \
     --unicode "root=${DISK}p3 rw initrd=\intel-ucode.img initrd=\initramfs-linux.img rd.driver.blacklist=nouveau rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0"
