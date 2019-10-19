@@ -36,10 +36,11 @@ if [[ "$1" == "--stage-one" ]]; then
 
   timedatectl set-ntp true
 
-  parted -s $DISK mklabel gpt
-  parted -s $DISK mkpart primary fat32 1MiB 551MiB name 1 efi set 1 esp on
-  parted -s $DISK mkpart primary swap 551MiB 30518MiB name 2 swap set 2 swap on
-  parted -s $DISK mkpart primary ext4 30518MiB 100% name 3 root set 3 root on
+  parted -s $DISK \
+    mklabel gpt \
+    mkpart primary fat32 1MiB 551MiB name 1 efi set 1 esp on \
+    mkpart primary swap 551MiB 30518MiB name 2 swap set 2 swap on \
+    mkpart primary ext4 30518MiB 100% name 3 root set 3 root on
 
   mkfs.fat -F32 -n boot ${DISK}p1
   mkswap -L swap ${DISK}p2
