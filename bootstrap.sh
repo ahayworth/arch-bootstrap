@@ -58,22 +58,22 @@ if [[ "$1" == "--stage-one" ]]; then
   arch-chroot /mnt /$(basename "$0") --stage-two
 elif [[ "$1" == "--stage-two" ]]; then
   ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
-  setfont ter-v22n
+  setfont ter-v32n
   hwclock --systohc
   echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
   echo 'LANG=en_US.UTF-8' > /etc/locale.conf
   locale-gen
   echo 'janeway' > /etc/hostname
 
-  echo > /etc/hosts <<EOF
+  cat > /etc/hosts <<EOF
 127.0.0.1 localhost
 ::1       localhost
 127.0.1.1 janeway.boyfriend.network janeway
 EOF
 
-  echo > /etc/vconsole.conf <<EOF
+  cat > /etc/vconsole.conf <<EOF
 KEYMAP=us
-FONT=ter-v22n
+FONT=ter-v32n
 EOF
 
   echo 'blacklist nouveau' >> /etc/modprobe.d/blacklist-nouveau.conf
