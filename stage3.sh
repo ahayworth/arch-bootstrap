@@ -1,12 +1,5 @@
 #!/bin/bash -x
 
-function dotfiles() {
-  cd $HOME
-  git clone git@github.com:ahayworth/dotfiles
-  dotfiles/dotdrop.sh install || /bin/true
-  pip install -r dotfiles/dotdrop/requirements.txt --user
-  dotfiles/dotdrop.sh install
-}
 
 function aur() {
   cd /tmp
@@ -15,18 +8,6 @@ function aur() {
   makepkg -si
   cd $HOME
   rm -rf /tmp/yay
-}
-
-function termfont() {
-  sudo bash -c "echo 'FONT=ter-124n' > /etc/vconsole.conf"
-  setfont ter-124n
-}
-
-function mkinitcpio() {
-  grep -q 'i915' /etc/mkinitcpio.conf || echo 'Add i915 to MODULES in /etc/mkinitcpio.conf'
-  grep -q 'sd-vconsole' /etc/mkinitcpio.conf || echo 'Add sd-vconsole to HOOKS in /etc/mkinitcpio.conf'
-  grep -q 'systemd' /etc/mkinitcpio.conf || echo 'Add systemd to HOOKS in /etc/mkinitcpio.conf'
-  sudo mkinitcpio -p linux
 }
 
 function graphics() {
@@ -57,13 +38,3 @@ function fonts() {
   sudo pacman -S ttf-bitstream-vera ttf-croscore ttf-roboto noto-fonts ttf-liberation ttf-ubuntu-font-family ttf-anonymous-pro ttf-freefont ttf-fira-mono ttf-inconsolata ttf-hack adobe-source-code-pro-fonts ttf-linux-libertine noto-fonts-emoji
   yay -S ttf-meslo ttf-monaco otf-eb-garamond ttf-twemoji-color ttf-emojione otf-san-francisco ttf-mac-fonts
 }
-
-#dotfiles
-#aur
-#termfont
-#mkinitcpio
-#graphics
-
-#desetup
-#appsetup
-fonts
