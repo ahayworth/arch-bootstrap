@@ -26,7 +26,7 @@ PACSTRAP_PACKAGES=(
   'texinfo'
   'vim'
   'wget'
-  'wireless_toos'
+  'wireless_tools'
 )
 
 function prompt_continue() {
