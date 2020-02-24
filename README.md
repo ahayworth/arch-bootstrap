@@ -1,2 +1,2 @@
 # arch-bootstrap
-bootstrap scripts for archlinux
+personal bootstrap scripts for archlinux
