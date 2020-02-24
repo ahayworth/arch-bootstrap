@@ -83,6 +83,7 @@ EOF
 cat > /mnt/boot/loader/entries/arch.conf <<EOF
 title Arch Linux
 linux /vmlinuz-linux
+options root=LABEL=root
 initrd /intel-ucode.img
 initrd /initramfs-linux.img
 EOF
